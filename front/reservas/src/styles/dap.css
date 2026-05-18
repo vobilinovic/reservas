@@ -1,0 +1,128 @@
+/* =========================================================================
+   DAP Design System — tokens para React
+   "Lo hacemos posible."
+   Fuentes cargadas en index.html via <link> para evitar conflictos PostCSS.
+   ========================================================================= */
+
+:root {
+  /* ---- Charcoal (color principal de la marca) ---- */
+  --dap-charcoal-950: #0E1013;
+  --dap-charcoal-900: #1A1D22;
+  --dap-charcoal-800: #2A2E35;
+  --dap-charcoal-700: #3F454E;
+  --dap-charcoal-500: #6B7280;
+  --dap-charcoal-300: #B8BCC3;
+  --dap-charcoal-200: #D9DCE0;
+  --dap-charcoal-100: #EEF0F2;
+  --dap-charcoal-50:  #F6F7F8;
+
+  /* ---- Gradiente (el alma de la marca) ---- */
+  --dap-sun:    #F7A518;
+  --dap-ember:  #E85A1A;
+  --dap-ruby:   #D1303C;
+  --dap-magma:  #8C2750;
+  --dap-deep:   #1E3A8A;
+
+  /* ---- Acento principal ---- */
+  --dap-accent:       #E85A1A;
+  --dap-accent-hover: #CE4A10;
+  --dap-accent-press: #B43F0A;
+  --dap-accent-tint:  #FCE9DA;
+
+  /* ---- Gradiente firma ---- */
+  --dap-gradient: linear-gradient(140deg, #F7A518 0%, #E85A1A 28%, #D1303C 52%, #8C2750 75%, #1E3A8A 100%);
+  --dap-gradient-h: linear-gradient(90deg, #F7A518 0%, #E85A1A 28%, #D1303C 52%, #8C2750 75%, #1E3A8A 100%);
+  --dap-gradient-rule: linear-gradient(90deg, #F7A518 0%, #E85A1A 30%, #D1303C 55%, #1E3A8A 100%);
+
+  /* ---- Superficies semánticas ---- */
+  --bg:         #FFFFFF;
+  --bg-subtle:  #F6F7F8;
+  --bg-muted:   #EEF0F2;
+  --bg-inverse: #0E1013;
+
+  --fg1: #1A1D22;
+  --fg2: #3F454E;
+  --fg3: #6B7280;
+  --fg-on-dark: #FFFFFF;
+
+  --border:        #D9DCE0;
+  --border-strong: #B8BCC3;
+  --divider:       #EEF0F2;
+
+  /* ---- Estados ---- */
+  --success:      #1E7F4F;
+  --success-tint: #E3F2EA;
+  --warning:      #F7A518;
+  --warning-tint: #FDF2DC;
+  --danger:       #D1303C;
+  --danger-tint:  #FBE4E6;
+  --info:         #1E3A8A;
+  --info-tint:    #E1E7F4;
+
+  /* ---- Tipografía ---- */
+  --font-display: 'Barlow', 'Helvetica Neue', Arial, sans-serif;
+  --font-body:    'DM Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    900;
+
+  /* ---- Escala tipográfica ---- */
+  --fs-xs:   12px;
+  --fs-sm:   14px;
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   20px;
+  --fs-xl:   24px;
+  --fs-2xl:  32px;
+  --fs-3xl:  42px;
+
+  /* ---- Espaciado ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+
+  /* ---- Radios ---- */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-pill: 999px;
+
+  /* ---- Sombras ---- */
+  --shadow-xs: 0 1px 2px rgba(14,16,19,.05);
+  --shadow-sm: 0 1px 3px rgba(14,16,19,.06), 0 1px 2px rgba(14,16,19,.04);
+  --shadow-md: 0 4px 10px -2px rgba(14,16,19,.08), 0 2px 4px -2px rgba(14,16,19,.04);
+  --shadow-lg: 0 12px 24px -6px rgba(14,16,19,.12), 0 4px 8px -4px rgba(14,16,19,.06);
+}
+
+/* ---- Base ---- */
+body {
+  font-family: var(--font-body);
+  color: var(--fg1);
+  background: var(--bg-subtle);
+}
+
+/* ---- Utilidades de gradiente ---- */
+.dap-text-gradient {
+  background: var(--dap-gradient-h);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dap-rule {
+  height: 3px;
+  border: none;
+  background: var(--dap-gradient-rule);
+  border-radius: var(--radius-pill);
+  margin: 0;
+}
