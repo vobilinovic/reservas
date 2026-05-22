@@ -4,7 +4,7 @@ import { BotonPrimario } from '../../components/ui/Button'
 import { getAeronavesSelect } from '../../services/aeronaves'
 import { listarRutas } from '../../services/rutas'
 import { crearVuelo } from '../../services/vuelos'
-
+import { Plane } from 'lucide-react'
 function NuevoVuelo() {
     const navigate = useNavigate()
     const [aeronaves, setAeronaves] = useState([])
@@ -64,7 +64,7 @@ function NuevoVuelo() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Ingresar Vuelo</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Plane/> Ingresar Vuelo</h2>
                     <p className="text-gray-400 text-sm mt-1">Completa los datos del nuevo vuelo programado.</p>
                 </div>
                 <button

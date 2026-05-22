@@ -16,16 +16,24 @@ class Usuario extends Authenticatable implements JWTSubject
     protected $fillable = [
         'rut',
         'nombre',
+        'primer_apellido',
+        'segundo_apellido',
         'email',
         'password',
         'rol_id',
         'activo',
         'prioridad',
+        'empresa',
+        'cargo',
+        'requiere_preferencia',
+        'asiento',
+        'ubicacion',
     ];
 
     protected $casts = [
         'activo'     => 'boolean',
         'created_at' => 'datetime',
+        'requiere_preferencia' => 'boolean',
     ];
 
     // Relación con Rol

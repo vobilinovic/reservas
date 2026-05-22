@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { listarAeronaves, eliminarAeronave } from '../../../services/aeronaves'
 import { BotonPrimario } from '../../../components/ui/Button'
-import { Plus, Pencil, Trash } from 'lucide-react'
+import { Plus, Pencil, Trash, Plane } from 'lucide-react'
 import ModalEliminar from '../../../components/ModalEliminar'
 
 function BadgeTipo({ tipo }) {
@@ -93,7 +93,7 @@ function Aeronaves() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Gestión de Aeronaves</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Plane/> Gestión de Aeronaves</h2>
                     <p className="text-gray-400 text-sm mt-1">Configuración de las aeronaves disponibles.</p>
                 </div>
                 <div className="flex items-center gap-2">

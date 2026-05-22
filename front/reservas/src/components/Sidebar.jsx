@@ -18,23 +18,23 @@ const ROL_LABELS = {
 const NAV = [
     {
         label: 'Principal',
-        roles: [1, 2, 3, 4, 5],
+        rol_nivel: [1, 2, 3, 4],
         items: [
-            { label: 'Inicio',       icon: Home,   roles: [1, 2, 3, 4, 5], path: '/inicio'       },
-            { label: 'Reservas',     icon: Ticket, roles: [4, 5],           path: '/reservas'     },
-            { label: 'Mis Reservas', icon: Ticket, roles: [1, 2],           path: '/mis-reservas' },
+            { label: 'Inicio',       icon: Home,   rol_nivel: [1, 2, 3, 4], path: '/inicio'       },
+            { label: 'Reservas',     icon: Ticket, rol_nivel: [3, 4],           path: '/reservas'     },
+            { label: 'Mis Reservas', icon: Ticket, rol_nivel: [1],           path: '/mis-reservas' },
         ],
     },
     {
         label: 'Operaciones de vuelo',
-        roles: [3, 4, 5],
+        rol_nivel: [3, 4],
         items: [
             { label: 'Vuelos', icon: Plane, path: '/vuelos' },
         ],
     },
     {
         label: 'Administración',
-        roles: [5],
+        rol_nivel: [4],
         items: [
             {
                 label: 'Configuración',
@@ -50,7 +50,6 @@ const NAV = [
                 submenu: [
                     { label: 'Usuarios', icon: User,   path: '/admin/usuarios' },
                     { label: 'Roles',    icon: Shield, path: '/admin/roles'    },
-                    { label: 'Permisos', icon: Key,    path: '/admin/permisos' },
                 ],
             },
         ],
@@ -64,12 +63,12 @@ function isActivePath(pathname, path) {
 function Sidebar() {
     const usuario  = getUsuario()
     const rol      = usuario?.rol_id
+    const nivel    = Number(usuario?.rol_nivel)
     const navigate = useNavigate()
     const location = useLocation()
-
     function canSee(item) {
-        if (!item.roles) return true
-        return item.roles.includes(rol)
+        if (!item.rol_nivel) return true
+        return item.rol_nivel.includes(nivel)
     }
 
     const [openMenus, setOpenMenus] = useState(() => {

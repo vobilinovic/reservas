@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { getAeronave, actualizarAeronave } from '../../../services/aeronaves'
 import { BotonPrimario, BotonSecundario } from '../../../components/ui/Button'
 import toast, { Toaster } from 'react-hot-toast'
-
+import { Plane } from 'lucide-react'
 const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 /* ---- Previsualización de cabina ---- */
@@ -173,7 +173,7 @@ function EditarAeronave() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Editar Aeronave</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Plane/> Editar Aeronave</h2>
                     <p className="text-gray-400 text-sm mt-1">Modifica los datos de la aeronave.</p>
                 </div>
                 <button

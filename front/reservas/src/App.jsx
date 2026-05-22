@@ -14,10 +14,19 @@ import EditarAeronave from './pages/Administracion/Aeronaves/EditarAeronave'
 
 import Vuelos from './pages/Vuelos/Vuelos'
 import VuelosNuevo from './pages/Vuelos/NuevoVuelo'
+import EditarVuelo from './pages/Vuelos/EditarVuelo'
 
 import Rutas from './pages/Administracion/Rutas/Rutas'
 import NuevaRuta from './pages/Administracion/Rutas/NuevaRuta'
 import EditarRuta from './pages/Administracion/Rutas/EditarRuta'
+
+import Usuarios from './pages/Administracion/Usuarios/Usuarios'
+import NuevoUsuario from './pages/Administracion/Usuarios/NuevoUsuario'
+import EditarUsuario from './pages/Administracion/Usuarios/EditarUsuario'
+
+import Roles from './pages/Administracion/Roles/Roles'
+import NuevoRol from './pages/Administracion/Roles/NuevoRol'
+import EditarRol from './pages/Administracion/Roles/EditarRol'
 
 import { getToken, getUsuario } from './services/auth'
 import Layout from './components/Layout'
@@ -40,14 +49,13 @@ function ProtectedRoute({ minNivel, children }) {
   return children
 }
 
-function InicioSegunRol(usuario){
-  if(usuario.nivel === 1){
+function InicioSegunRol({ usuario }) { 
+    if (usuario?.rol_nivel >= 3) 
+      return <InicioAdmin />
+    if (usuario?.rol_tipo === 'ejecutivo') 
+      return <InicioEjecutivo />
+      
     return <InicioEjecutivo />
-  }
-  if(usuario.nivel === 4 || usuario.nivel === 3){
-    return <InicioAdmin />
-  }
-  return <InicioAdmin />
 }
 
 function App() {
@@ -150,6 +158,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/vuelos/editar/:id"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <EditarVuelo />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
         {/*RUTAS*/}
         <Route
           path="/admin/rutas"
@@ -181,7 +199,70 @@ function App() {
             </ProtectedRoute>
           }
         />
+        {/*USUARIOS*/}
+        <Route
+          path="/admin/usuarios"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <Usuarios />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/usuarios/nuevo"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <NuevoUsuario />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/usuarios/editar/:id"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <EditarUsuario />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        {/*ROLES*/}
+        <Route
+          path="/admin/roles"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <Roles />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/roles/nuevo"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <NuevoRol />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/roles/editar/:id"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <EditarRol />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+      
     </BrowserRouter>
   )
 }

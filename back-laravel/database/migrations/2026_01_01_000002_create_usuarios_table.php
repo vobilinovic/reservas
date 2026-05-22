@@ -12,6 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('rut', 12)->unique();
             $table->string('nombre', 100);
+            $table->string('empresa', 100);
+            $table->string('cargo', 100);
             $table->string('email', 100)->unique();
             $table->string('password', 255);
             $table->foreignId('rol_id')->constrained('roles');

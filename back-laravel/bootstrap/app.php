@@ -21,4 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             return response()->json(['message' => 'No autenticado'], 401);
         });
+        // Laravel intenta generar route('login') antes del render — capturar aquí también
+        $exceptions->render(function (\Symfony\Component\Routing\Exception\RouteNotFoundException $e, $request) {
+            return response()->json(['message' => 'No autenticado'], 401);
+        });
     })->create();

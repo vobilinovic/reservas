@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Vuelo;
-use App\Models\Reserva;  // singular — convención Laravel
+use App\Models\Reserva;
 
 class VueloController extends Controller
 {
@@ -58,6 +59,28 @@ class VueloController extends Controller
         if (!$vuelo) {
             return response()->json(['message' => 'Vuelo no encontrado'], 404);
         }
+
+        $aeronave = $vuelo->aeronave;
+        $columnas = $aeronave->columnas
+            ?: count(array_filter(explode(',', $aeronave->columnas_config)));
+        $capacidad = $aeronave->filas * $columnas;
+
+        $ocupados = Reserva::where('id_vuelo', $vuelo->id)
+            ->whereNotIn('estado', ['cancelada'])
+            ->count();
+
+        $vuelo->asientos = [
+            'disponibles'       => $capacidad - $ocupados,
+            'ocupados'          => $ocupados,
+            'asientosOcupados'  => Reserva::where('id_vuelo', $vuelo->id)
+                                        ->whereNotIn('estado', ['cancelada'])
+                                        ->pluck('asiento'),
+            'capacidadAeronave' => $capacidad,
+            'columnas'          => $columnas,
+            'filas'             => $aeronave->filas,
+            'pasillo_despues_de'=> $aeronave->pasillo_despues_de,
+            'emergencia'        => $aeronave->filas_emergencia,
+        ];
 
         return response()->json($vuelo);
     }
@@ -153,5 +176,17 @@ class VueloController extends Controller
         ]);
     }*/
 
+    public function fechasDisponibles(){
+        // DB::table() evita el cast Carbon sobre fecha_vuelo que falla con ODBC de SQL Server
+        $fechas = DB::table('vuelos')
+            ->whereRaw('fecha_vuelo >= CAST(GETDATE() AS DATE)')
+            ->whereIn('estado', ['programado', 'embarcando', 'demorado'])
+            ->pluck('fecha_vuelo')
+            ->unique()
+            ->values()
+            ->map(fn($f) => substr($f, 0, 10)); // Asegurar formato YYYY-MM-DD
+
+        return response()->json($fechas);
+    }
 
 }

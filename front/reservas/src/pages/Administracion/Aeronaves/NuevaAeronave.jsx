@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { crearAeronave } from '../../../services/aeronaves'
 import { BotonPrimario } from '../../../components/ui/Button'
+import { Plane } from 'lucide-react'
 
 const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
@@ -134,7 +135,7 @@ function NuevaAeronave() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Ingresar Aeronave</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Plane/> Ingresar Aeronave</h2>
                     <p className="text-gray-400 text-sm mt-1">Completa los datos de la nueva aeronave.</p>
                 </div>
                 <button
@@ -289,7 +290,7 @@ function NuevaAeronave() {
                 <div className="flex gap-3 mt-5">
                     <BotonPrimario
                         tipo="submit"
-                        texto={loading ? 'Guardando…' : 'Guardar Aeronave'}
+                        texto={loading ? 'Ingresando...' : 'Ingresar Aeronave'}
                         disabled={loading}
                     />
                     <button

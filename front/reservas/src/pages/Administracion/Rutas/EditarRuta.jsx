@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { getRuta, actualizarRuta } from '../../../services/rutas'
 import { BotonPrimario, BotonSecundario } from '../../../components/ui/Button'
+import { Route } from 'lucide-react'
 
 function EditarRuta() {
     const { id } = useParams()
@@ -60,19 +61,13 @@ function EditarRuta() {
     const inputClass = "w-full p-2.5 rounded-lg border border-gray-200 text-sm text-gray-800 focus:outline-none focus:border-blue-900"
     const labelClass = "block text-sm font-semibold text-gray-700 mb-1"
 
-    if (cargando) {
-        return (
-            <div className="p-8 text-sm text-gray-400">Cargando ruta...</div>
-        )
-    }
-
     return (
         <div className="p-8">
 
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Editar Ruta</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Route/> Editar Ruta</h2>
                     <p className="text-gray-400 text-sm mt-1">Modifica los datos de la ruta.</p>
                 </div>
                 <button
@@ -88,6 +83,13 @@ function EditarRuta() {
 
                     {/* Tarjeta del formulario */}
                     <div className="flex-1 bg-white rounded-lg shadow-sm p-6">
+
+                    {cargando ? (
+                        <div className="flex items-center justify-center py-20 gap-2 text-gray-400 text-sm">
+                            <div className="w-5 h-5 border-2 border-gray-200 border-t-blue-900 rounded-full animate-spin" />
+                            Cargando datos de ruta...
+                        </div>
+                    ) : (<>
 
                         <h3 className="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-4">
                             Informacion
@@ -158,6 +160,7 @@ function EditarRuta() {
                             </button>
                         </div>
 
+                    </>) }
                     </div>
                 </div>
 
@@ -170,7 +173,7 @@ function EditarRuta() {
                 <div className="flex gap-3 mt-5">
                     <BotonPrimario
                         tipo="submit"
-                        texto={loading ? 'Guardando...' : 'Guardar Cambios'}
+                        texto={loading ? 'Guardando...' : 'Guardar Ruta'}
                         disabled={loading}
                     />
                     <BotonSecundario

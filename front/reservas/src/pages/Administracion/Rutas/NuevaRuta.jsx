@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { crearRuta } from '../../../services/rutas'
 import { BotonPrimario } from '../../../components/ui/Button'
-
+import { Route } from 'lucide-react'
 
 function NuevaRuta() {
     const navigate = useNavigate()
@@ -47,7 +47,7 @@ function NuevaRuta() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Ingresar Ruta</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Route/> Ingresar Ruta</h2>
                     <p className="text-gray-400 text-sm mt-1">Completa los datos de la nueva ruta.</p>
                 </div>
                 <button
@@ -121,7 +121,7 @@ function NuevaRuta() {
                 <div className="flex gap-3 mt-5">
                     <BotonPrimario
                         tipo="submit"
-                        texto={loading ? 'Guardando…' : 'Guardar Ruta'}
+                        texto={loading ? 'Ingresando...' : 'Ingresar Ruta'}
                         disabled={loading}
                     />
                     <button

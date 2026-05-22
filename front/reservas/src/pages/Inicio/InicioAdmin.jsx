@@ -295,8 +295,9 @@ function Inicio() {
                                                     <span className="font-mono">{v.hora_salida}</span>
                                                 </div>
                                             </div>
-
+                                            {/*
                                             <BadgeEstado estado={v.estado} />
+                                            */}
                                             </div>
                                                 
                                         </div>  

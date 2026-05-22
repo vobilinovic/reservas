@@ -2,11 +2,11 @@ import { getUsuario } from '../../services/auth'
 import { BotonPrimario, BotonSecundario } from '../../components/ui/Button'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { getVuelo, asientosDisponibles } from '../../services/vuelos'
+import { getVuelo } from '../../services/vuelos'
 import { crearReserva } from '../../services/reservas'
-import { ArrowRight, Clock, CalendarDays, Armchair, Check, Plane } from 'lucide-react'
+import { ArrowRight, Clock, CalendarDays, Armchair, Check, Plane, TicketsPlane } from 'lucide-react'
+import { Breadcrumb } from '../../components/ui/Breadcrumb'
 import BadgeEstado from '../../components/ui/BadgeEstado'
-
 
 function generarColumnas(nColumnas) {
     const LETRAS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -108,11 +108,12 @@ function NuevaReserva() {
     const [cargando,            setCargando]            = useState(true)
     const [loading,             setLoading]             = useState(false)
     const [error,               setError]               = useState(null)
-    const [asientoSeleccionado, setAsientoSeleccionado] = useState(null)
+    const [asientoSeleccionado, setAsientoSeleccionado] = useState(usuario?.asiento ?? null)
+    const [pasos, setPasos] = useState(1)
     const [form,                setForm]                = useState({
         id_usuario:  usuario?.id,
         id_vuelo:    id,
-        asiento:     '',
+        asiento:     usuario?.asiento ?? '',
         fechaReserva: new Date().toISOString().split('T')[0],
         estado:      'reservado',
     })
@@ -125,12 +126,9 @@ function NuevaReserva() {
     useEffect(() => {
         async function datosVuelo() {
             try {
-                const [v, a] = await Promise.all([
-                    getVuelo(id),
-                    asientosDisponibles(id)
-                ])
+                const v = await getVuelo(id)
                 setVuelo(v)
-                setAsientos(a)
+                setAsientos(v.asientos)
             } catch (err) {
                 setError(err.message)
             } finally {
@@ -139,6 +137,18 @@ function NuevaReserva() {
         }
         datosVuelo()
     }, [id])
+
+    // Cuando carguen los asientos, preseleccionar solo si está libre
+    useEffect(() => {
+        if (!asientos || !usuario?.asiento) return
+            
+        const preferido = usuario.asiento
+        const estaOcupado = asientos.asientosOcupados.includes(preferido)
+            
+        if (!estaOcupado) {
+            setAsientoSeleccionado(preferido)
+        }
+    }, [asientos])
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -171,9 +181,12 @@ function NuevaReserva() {
         <div className="p-8">
 
             {/* Encabezado */}
-            <div className="mb-6">
-                <h2 className="text-2xl font-bold text-blue-900">Nueva Reserva</h2>
-                <p className="text-sm text-gray-400 mt-1">Selecciona tu asiento y confirma la reserva.</p>
+            <div className="flex items-start justify-between mb-6">
+                <div>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><TicketsPlane/> Nueva Reserva</h2>
+                    <p className="text-gray-400 text-sm mt-1">Selecciona tu asiento y confirma la reserva.</p>
+                </div>
+                <Breadcrumb items={[{ texto: 'Inicio', href: '/inicio' }, { texto: 'Reservas', href: '/reservas' }, { texto: 'Nueva Reserva' }]} />
             </div>
 
             {/* Cargando */}
@@ -192,48 +205,58 @@ function NuevaReserva() {
             )}
 
             {vuelo && asientos && (
+            
                 <div className="flex flex-col gap-6">
 
                     {/* ── Card ticket de vuelo ── */}
-                    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-                        {/* Franja superior azul */}
-                        <div className="bg-blue-900 px-6 py-3 flex items-center justify-between">
-                            <span className="font-mono font-bold text-sm text-white/80 tracking-widest">
-                                {vuelo.num_vuelo}
-                            </span>
+                    <div className="bg-white rounded-xl shadow-sm relative">
+
+                        {/* Mordiscos laterales — simulan corte de ticket */}
+                        <div className="absolute -left-3 top-[65px] w-6 h-6 bg-gray-50 rounded-full z-10" />
+                        <div className="absolute -right-3 top-[65px] w-6 h-6 bg-gray-50 rounded-full z-10" />
+
+                        {/* Stub superior: número de vuelo + estado */}
+                        <div className="px-6 py-4 flex items-center justify-between border-b border-dashed border-gray-300">
+                            <div className="flex items-center gap-3">
+                                <div className="w-1.5 h-10 bg-blue-900 rounded-full" />
+                                <div className="flex flex-col">
+                                    <span className="text-xs text-gray-400">Vuelo</span>
+                                    <span className="font-mono font-black text-2xl text-blue-900 tracking-wider">
+                                        {vuelo.num_vuelo}
+                                    </span>
+                                </div>
+                            </div>
                             <BadgeEstado estado={vuelo.estado} />
                         </div>
 
                         {/* Cuerpo del ticket */}
                         <div className="px-6 py-5 flex items-center gap-4">
-                            {/* Origen */}
+
+                            {/* Origen + hora salida */}
                             <div className="text-center shrink-0">
                                 <p className="text-3xl font-black font-mono text-blue-900 leading-none">
                                     {vuelo.ruta_origen?.codigo}
                                 </p>
                                 <p className="text-xs text-gray-400 mt-1">{vuelo.ruta_origen?.ciudad}</p>
+                                <p className="text-xs font-mono font-bold text-gray-600 mt-2 flex items-center justify-center gap-1">
+                                    <Clock size={10} className="text-gray-400" />
+                                    {vuelo.hora_salida}
+                                </p>
                             </div>
 
-                            {/* Línea de vuelo */}
-                            <div className="flex-1 flex flex-col items-center gap-1.5">
+                            {/* Línea + fecha */}
+                            <div className="flex-1 flex flex-col items-center gap-2.5">
                                 <div className="flex items-center w-full gap-2">
-                                    <div className="h-px flex-1 border-t border-dashed border-gray-300" />
-                                    <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-                                        <Plane size={24} className="text-blue-900 -rotate-90" />
+                                    <div className="h-px flex-1 bg-gray-200" />
+                                    <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+                                        <Plane size={15} className="text-blue-900 -rotate-90" />
                                     </div>
-                                    <div className="h-px flex-1 border-t border-dashed border-gray-300" />
+                                    <div className="h-px flex-1 bg-gray-200" />
                                 </div>
-                                <div className="flex items-center gap-3 text-sm text-gray-400">
-                                    <span className="flex items-center gap-1">
-                                        <CalendarDays size={11} className="text-gray-300" />
-                                        {new Date(vuelo.fecha_vuelo + 'T00:00:00').toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
-                                    </span>
-                                    <span className="text-gray-200">·</span>
-                                    <span className="flex items-center gap-1">
-                                        <Clock size={11} className="text-gray-300" />
-                                        <span className="font-mono">{vuelo.hora_salida} hrs</span>
-                                    </span>
-                                </div>
+                                <span className="flex items-center gap-1.5 bg-blue-50 text-blue-800 text-xs font-semibold px-2.5 py-1 rounded-full">
+                                    <CalendarDays size={11} />
+                                    {new Date(vuelo.fecha_vuelo + 'T00:00:00').toLocaleDateString('es-CL', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                </span>
                             </div>
 
                             {/* Destino */}
@@ -243,8 +266,11 @@ function NuevaReserva() {
                                 </p>
                                 <p className="text-xs text-gray-400 mt-1">{vuelo.ruta_destino?.ciudad}</p>
                             </div>
+
                         </div>
                     </div>
+
+                   
 
                     {/* ── Grid: Cabina + Panel lateral ── */}
                     <div className="grid grid-cols-2 gap-6">
@@ -312,7 +338,7 @@ function NuevaReserva() {
                                             </p>
                                             <p className="text-xs text-blue-800 mt-1">Asiento seleccionado</p>
                                             {esEmergencia && (
-                                                <span className="inline-block mt-1.5 text-xs bg-orange-400/20 text-orange-200 border border-orange-300/30 px-2 py-0.5 rounded-full font-semibold">
+                                                <span className="inline-block mt-1.5 text-xs bg-orange-400/20 text-orange-700 border border-orange-300/30 px-2 py-0.5 rounded-full font-semibold">
                                                     Fila de emergencia
                                                 </span>
                                             )}

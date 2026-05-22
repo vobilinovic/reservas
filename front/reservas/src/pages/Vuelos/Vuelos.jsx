@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { listarVuelos } from '../../services/vuelos'
 import { BotonPrimario } from '../../components/ui/Button'
 import { Pencil, Plus, Trash } from 'lucide-react'
+import { Plane } from 'lucide-react'
 
 /* ---- Badge estado ---- */
 const ESTADO_ESTILOS = {
@@ -51,6 +52,12 @@ function Vuelos() {
     const [vuelos, setVuelos]   = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError]     = useState('')
+    const [busqueda, setBusqueda] = useState('')
+
+    const filtrados = vuelos.filter(v => 
+        v.num_vuelo.toLowerCase().includes(busqueda.toLowerCase()) || 
+        v.aeronave.matricula.toLowerCase().includes(busqueda.toLowerCase())
+    )
 
     useEffect(() => {
         async function cargar() {
@@ -72,14 +79,23 @@ function Vuelos() {
             {/* Encabezado */}
             <div className="flex items-start justify-between mb-6">
                 <div>
-                    <h2 className="text-2xl font-bold text-blue-900">Gestión de Vuelos</h2>
+                    <h2 className="text-2xl font-bold text-blue-900 flex gap-2"><Plane/> Gestión de Vuelos</h2>
                     <p className="text-gray-400 text-sm mt-1">Vuelos programados y su estado operacional.</p>
                 </div>
-                <BotonPrimario
-                    texto="Ingresar Vuelo"
-                    icono={<Plus/>}
-                    onClick={() => navigate('/vuelos/nuevo')}
-                />
+                <div className="flex items-center gap-2">
+                    <input
+                        value={busqueda}
+                        onChange={e => setBusqueda(e.target.value)}
+                        type="text"
+                        placeholder= "Buscar"
+                        className="w-100 p-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-900"
+                    />
+                    <BotonPrimario
+                        texto="Ingresar Vuelo"
+                        icono={<Plus/>}
+                        onClick={() => navigate('/vuelos/nuevo')}
+                    />
+                </div>
             </div>
 
             {/* Tabla */}
@@ -167,7 +183,7 @@ function Vuelos() {
                                 <td className="px-5 py-4 text-right">
                                   <div className="flex items-center justify-end gap-3">
                                     <button
-                                      onClick={() => navigate(`/rutas/editar/${v.id}`)}
+                                      onClick={() => navigate(`/vuelos/editar/${v.id}`)}
                                       className="flex items-center gap-1.5 text-sm text-blue-900 hover:underline font-medium"
                                     >
                                       <Pencil size={14}/> Editar

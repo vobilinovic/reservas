@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getUsuario } from '../../services/auth'
-import { listarVuelos, asientosDisponibles } from '../../services/vuelos'
+import { listarVuelos } from '../../services/vuelos'
 import { listarRutas } from '../../services/rutas'
 import { listarReservasUsuario } from '../../services/reservas'
 import { CalendarDays, Plane, Ticket, ArrowRight, Clock, Search, Users, ChevronRight, Calendar } from 'lucide-react'
@@ -96,6 +96,7 @@ function Inicio() {
             const todos = await listarVuelos()
             const estadosActivos = ['programado', 'embarcando', 'en_vuelo', 'demorado']
 
+            console.log('vuelos' , todos)
             const filtrados = todos.filter(v => {
                 if (!estadosActivos.includes(v.estado))       return false
                 if (v.fecha_vuelo < hoy)                      return false
@@ -108,16 +109,9 @@ function Inicio() {
                 return a.hora_salida.localeCompare(b.hora_salida)
             })
 
-            const filtradosConAsientos = await Promise.all(
-                filtrados.map(async v => {
-                    const asientos = await asientosDisponibles(v.id)
-                    return { ...v, asientos } //copia el array v y le agrega asientos
-                })
-            )
+            console.log('reservas',reservas)
 
-            console.log(reservas)
-            //ahora filtramos si es ese vuelo esta reservado por el usuario
-            const vuelosConReserva = filtradosConAsientos.map(v => {
+            const vuelosConReserva = filtrados.map(v => {
                 const reserva = reservas.find(r => Number(r.id_vuelo) === Number(v.id) && Number(r.id_usuario) === usuario.id)
                 return {
                     ...v,
@@ -126,7 +120,8 @@ function Inicio() {
             })
             console.log('vuelosConReserva', vuelosConReserva)
             setResultados(vuelosConReserva)
-        } catch {
+        } catch(err) {
+            console.error('handleBuscar error:', err)
             setResultados([])
         } finally {
             setBuscando(false)
