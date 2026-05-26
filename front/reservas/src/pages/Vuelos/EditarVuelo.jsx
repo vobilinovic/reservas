@@ -6,6 +6,7 @@ import { getVuelo, actualizarVuelo } from '../../services/vuelos'
 import { listarRutas } from '../../services/rutas'
 import { crearVuelo } from '../../services/vuelos'
 import { Plane } from 'lucide-react'
+import { Breadcrumb } from '../../components/ui/Breadcrumb'
 
 function EditarVuelo() {
     const navigate = useNavigate()
@@ -24,6 +25,7 @@ function EditarVuelo() {
         fecha_vuelo: '',
         hora_salida: '',
         hora_llegada: '',
+        cupo: '',
         estado: '',
     })
 
@@ -43,6 +45,7 @@ function EditarVuelo() {
                     fecha_vuelo: data.fecha_vuelo,
                     hora_salida: data.hora_salida,
                     hora_llegada: data.hora_llegada,
+                    cupo: data.cupo,
                     estado: data.estado,
                 })
             } catch (err) {
@@ -72,7 +75,7 @@ function EditarVuelo() {
                 id_destino:   parseInt(form.id_destino),
                 hora_llegada: form.hora_llegada || null,   // string vacío → null
             })
-            navigate('/vuelos')
+            navigate('/admin/vuelos')
         } catch (err) {
             setError(err.message)
         } finally {
@@ -157,6 +160,17 @@ function EditarVuelo() {
                                     <option value="demorado">Demorado</option>
                                     <option value="cancelado">Cancelado</option>
                                 </select>
+                            </div>
+                            <div className="col-span-1">
+                                <label className={labelClass} htmlFor="cupo">Cupo Pasajeros</label>
+                                <input
+                                    id="cupo"
+                                    type="number"
+                                    placeholder="80"
+                                    value={form.cupo}
+                                    onChange={e => set('cupo', e.target.value)}
+                                    className={inputClass}
+                                />
                             </div>
                         </div>
 
@@ -257,7 +271,7 @@ function EditarVuelo() {
                     />
                     <button
                         type="button"
-                        onClick={() => navigate('/vuelos')}
+                        onClick={() => navigate('/admin/vuelos')}
                         className="px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                         Cancelar

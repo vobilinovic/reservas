@@ -33,4 +33,5 @@ class Reserva extends Model
     {
         return $this->belongsTo(Usuario::class, 'id_usuario');
     }
+
 }

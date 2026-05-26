@@ -37,7 +37,7 @@ function Login() {
     try{
       const data = await login(rut, password);
       saveSession(data);
-      navigate('/inicio');
+      window.location.href = '/inicio';
     }catch(err){
       setError(err.message);
     }finally{

@@ -29,10 +29,62 @@ class UsuarioSeeder extends Seeder{
         Usuario::updateOrCreate(
             ['rut' => '22222222-2'],
             [
-                'nombre'   => 'Ejecutivo DAP',
+                'nombre'   => 'Ejecutivo',
                 'email'    => 'ejecutivo@dap.cl',
                 'empresa'  => 'Collahuasi',
                 'cargo'    => 'Ejecutivo',
+                'password' => Hash::make('Ejecutivo@2026'),
+                'rol_id'   => $rolEjecutivo->id,
+                'activo'   => true,
+            ]
+        );
+
+        Usuario::updateOrCreate(
+            ['rut' => '15421658-1'],
+            [
+                'nombre'   => 'Jose Perez',
+                'email'    => 'joseperez@test.cl',
+                'empresa'  => 'Collahuasi',
+                'cargo'    => 'SI Construccion',
+                'password' => Hash::make('Ejecutivo@2026'),
+                'rol_id'   => $rolEjecutivo->id,
+                'activo'   => true,
+            ]
+        );
+
+        Usuario::updateOrCreate(
+            ['rut' => '16422133-1'],
+            [
+                'nombre'   => 'Rafael Gonzalez',
+                'email'    => 'rafael@test.cl',
+                'empresa'  => 'Collahuasi',
+                'cargo'    => 'Gerente de Proyectos',
+                'password' => Hash::make('Ejecutivo@2026'),
+                'rol_id'   => $rolEjecutivo->id,
+                'activo'   => true,
+            ]
+        );
+
+        Usuario::updateOrCreate(
+            ['rut' => '16333133-1'],
+            [
+                'nombre'   => 'Jose Ramirez',
+                'email'    => 'joseramirez@test.cl',
+                'empresa'  => 'Collahuasi',
+                'cargo'    => 'Gerente de Proyectos',
+                'password' => Hash::make('Ejecutivo@2026'),
+                'rol_id'   => $rolEjecutivo->id,
+                'activo'   => true,
+            ]
+        );
+
+        Usuario::updateOrCreate(
+            ['rut' => '12345678-1'],
+            [
+                'nombre'   => 'Rafael Gonzalez',
+                'email'    => 'rafaelgonzalez@test.cl',
+                'empresa'  => 'Collahuasi',
+                'cargo'    => 'Jefe Mantencion',
                 'password' => Hash::make('Ejecutivo@2026'),
                 'rol_id'   => $rolEjecutivo->id,
                 'activo'   => true,

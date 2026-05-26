@@ -24,9 +24,10 @@ export default function ModalEliminar({ data, onConfirmar, onCancelar, eliminand
                     tipo === 'aeronave' ? '¿Esta seguro de eliminar la aeronave?' : 
                     tipo === 'usuario' ? '¿Esta seguro de eliminar el usuario?' :
                     tipo === 'rol' ? '¿Esta seguro de eliminar el rol?' :
+                    tipo === 'reserva' ? '¿Esta seguro de cancelar la reserva?' :
                     ''}
                 </h3>
-                <p className="text-center text-sm font-semibold text-blue-900 mb-5">
+                <p className="text-center text-sm  text-blue-900 mb-5">
                     {tipo === 'ruta' ? data.ciudad :
                     tipo === 'aeronave' ? data.matricula : 
                     tipo === 'usuario' ? data.nombre :
@@ -35,6 +36,14 @@ export default function ModalEliminar({ data, onConfirmar, onCancelar, eliminand
                     {tipo === 'ruta' ? 
                     <span className="ml-2 px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-xs font-bold">
                         {data.codigo}
+                    </span>
+                    : tipo === 'reserva' ? 
+                    <span>
+                        Tu reserva para el vuelo
+                        <span className="m-1 px-2 py-0.5 rounded bg-blue-100 text-blue-700 text-xs font-bold">
+                        {data.vuelo.num_vuelo}
+                        </span>
+                        de <b>{data.vuelo.ruta_destino?.codigo}</b> a <b>{data.vuelo.ruta_origen?.codigo}</b> será anulada.
                     </span>
                     : ''}
                 </p>

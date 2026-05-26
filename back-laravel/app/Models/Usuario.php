@@ -28,6 +28,7 @@ class Usuario extends Authenticatable implements JWTSubject
         'requiere_preferencia',
         'asiento',
         'ubicacion',
+        'telefono',
     ];
 
     protected $casts = [

@@ -50,6 +50,7 @@ class UsuarioController extends Controller
             'rol_id'        => 'required|integer|exists:roles,id',
             'asiento'              => 'nullable|string|max:5',
             'ubicacion'            => 'nullable|string|max:100',
+            'telefono'          => 'nullable|string|max:20',
             'requiere_preferencia' => 'boolean',
         ]);
 
@@ -70,18 +71,19 @@ class UsuarioController extends Controller
         }
 
         $data = $request->validate([
-            'rut'           => 'required|string|max:12',
-            'nombre'        => 'required|string|max:100',
-            'primer_apellido'  => 'nullable|string|max:100',
-            'segundo_apellido' => 'nullable|string|max:100',
-            'email'         => 'required|string|max:100',
-            'empresa'       => 'nullable|string|max:100',
-            'cargo'         => 'nullable|string|max:100',
-            'activo'        => 'boolean',
-            'password'      => 'sometimes|nullable|string|min:6|max:255',
-            'rol_id'        => 'required|integer|exists:roles,id',
+            'rut'                  => 'sometimes|string|max:12',
+            'nombre'               => 'sometimes|string|max:100',
+            'primer_apellido'      => 'nullable|string|max:100',
+            'segundo_apellido'     => 'nullable|string|max:100',
+            'email'                => 'sometimes|string|max:100',
+            'empresa'              => 'nullable|string|max:100',
+            'cargo'                => 'nullable|string|max:100',
+            'activo'               => 'boolean',
+            'password'             => 'sometimes|nullable|string|min:6|max:255',
+            'rol_id'               => 'sometimes|integer|exists:roles,id',
             'asiento'              => 'nullable|string|max:5',
             'ubicacion'            => 'nullable|string|max:100',
+            'telefono'             => 'nullable|string|max:20',
             'requiere_preferencia' => 'boolean',
         ]);
 

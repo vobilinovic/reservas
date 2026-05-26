@@ -19,6 +19,7 @@ function NuevoVuelo() {
         fecha_vuelo:  new Date().toISOString().split('T')[0],
         hora_salida:  '',
         hora_llegada: '',
+        cupo:         80,
         estado:       'programado',
     })
 
@@ -126,6 +127,17 @@ function NuevoVuelo() {
                                     <option value="cancelado">Cancelado</option>
                                 </select>
                             </div>
+                            <div className="col-span-1">
+                                <label className={labelClass} htmlFor="cupo">Cupo Pasajeros</label>
+                                <input
+                                    id="cupo"
+                                    type="number"
+                                    placeholder="80"
+                                    value={form.cupo}
+                                    onChange={e => set('cupo', e.target.value)}
+                                    className={inputClass}
+                                />
+                            </div>
                         </div>
 
                         {/* Ruta */}
@@ -224,7 +236,7 @@ function NuevoVuelo() {
                     />
                     <button
                         type="button"
-                        onClick={() => navigate('/vuelos')}
+                        onClick={() => navigate(-1)}
                         className="px-4 py-2.5 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                         Cancelar

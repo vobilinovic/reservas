@@ -15,10 +15,11 @@ class ReservaController extends Controller
         return response()->json(Reserva::all());
     }
 
+
     // GET /api/v1/reservas/{id}
     public function show($id)
     {
-        $reserva = Reserva::find($id);
+        $reserva = Reserva::with(['vuelo.aeronave', 'vuelo.rutaOrigen', 'vuelo.rutaDestino', 'usuario'])->find($id);
 
         if (!$reserva) {
             return response()->json(['message' => 'Reserva no encontrada'], 404);
@@ -91,7 +92,7 @@ class ReservaController extends Controller
     }
 
     public function reservasUsuario($id){
-        $reservas = Reserva::with('vuelo')
+        $reservas = Reserva::with(['vuelo.rutaOrigen', 'vuelo.rutaDestino', 'usuario'])
             ->where('id_usuario', $id)
             ->where('estado', '!=', 'cancelada')
             ->orderBy('fechaReserva', 'desc')
@@ -104,4 +105,5 @@ class ReservaController extends Controller
         return response()->json($reservas);
 
     }
+
 }

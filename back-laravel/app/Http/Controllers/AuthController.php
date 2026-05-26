@@ -53,6 +53,7 @@ class AuthController extends Controller
                 'rol_id'    => $usuario->rol->id,
                 'asiento'   => $usuario->asiento,
                 'ubicacion' => $usuario->ubicacion,
+                'telefono'  => $usuario->telefono,
             ],
         ]);
     }
@@ -71,6 +72,7 @@ class AuthController extends Controller
             'rol_tipo'  => $usuario->rol->tipo,
             'asiento'   => $usuario->asiento,
             'ubicacion' => $usuario->ubicacion,
+            'telefono'  => $usuario->telefono,
         ]);
     }
 

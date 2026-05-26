@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Reserva;
 
 class Vuelo extends Model
 {
@@ -18,6 +19,7 @@ class Vuelo extends Model
         'fecha_vuelo',
         'hora_salida',
         'hora_llegada',
+        'cupo',
         'estado',
     ];
 
@@ -38,5 +40,10 @@ class Vuelo extends Model
     public function rutaDestino()
     {
         return $this->belongsTo(Ruta::class, 'id_destino');
+    }
+
+    public function reservas()
+    {
+        return $this->hasMany(Reserva::class, 'id_vuelo');
     }
 }

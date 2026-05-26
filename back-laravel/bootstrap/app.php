@@ -26,3 +26,4 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json(['message' => 'No autenticado'], 401);
         });
     })->create();
+    

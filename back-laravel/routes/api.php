@@ -22,8 +22,8 @@ Route::prefix('v1')->group(function () {
     Route::prefix('aeronaves')->middleware('auth:api')->group(function () {
         Route::get('',   [AeronaveController::class, 'index'])->middleware('role:1');
         Route::post('',  [AeronaveController::class, 'store'])->middleware('role:3');
+        Route::get('select',  [AeronaveController::class, 'selectList'])->middleware('auth:api');
         Route::get('{id}',    [AeronaveController::class, 'show'])->middleware('role:1');
-        Route::get('select', [AeronaveController::class, 'selectList'])->middleware('auth:api');
         Route::put('{id}',    [AeronaveController::class, 'update'])->middleware('role:3');
         Route::delete('{id}', [AeronaveController::class, 'destroy'])->middleware('role:3');
     });
@@ -58,6 +58,8 @@ Route::prefix('v1')->group(function () {
         Route::delete('{id}', [ReservaController::class, 'destroy'])->middleware('auth:api');
         //reservas por usuario
         Route::get('{id}/usuario', [ReservaController::class, 'reservasUsuario'])->middleware('auth:api');
+        //anular reserva
+        Route::put('{id}/cancelar', [ReservaController::class, 'anularReserva'])->middleware('auth:api');
     });
 
     // ── Usuarios ─────────────────────────────────────────
@@ -65,7 +67,7 @@ Route::prefix('v1')->group(function () {
         Route::get('',        [UsuarioController::class, 'index'])->middleware('role:1');
         Route::post('',       [UsuarioController::class, 'store'])->middleware('role:3');
         Route::get('{id}',    [UsuarioController::class, 'show'])->middleware('role:1');
-        Route::put('{id}',    [UsuarioController::class, 'update'])->middleware('role:3');
+        Route::put('{id}',    [UsuarioController::class, 'update'])->middleware('auth:api');
         Route::delete('{id}', [UsuarioController::class, 'destroy'])->middleware('role:3');
     });
 

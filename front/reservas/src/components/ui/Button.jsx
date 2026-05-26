@@ -18,17 +18,36 @@ export function BotonPrimario({ id, texto, tipo = "button", onClick, disabled = 
     )
 }
 
-export function BotonSecundario({ id, texto, tipo = "button", onClick, disabled = false, icono }) {
+export function BotonSecundario({ id, texto, tipo = "button", onClick, disabled = false, icono, clase }) {
     return (
         <button
             id={id}
             type={tipo}
             onClick={onClick}
             disabled={disabled}
-            className={`flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 transition-colors ${
+            className={`flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg border border-gray-300 text-sm font-semibold text-gray-700 transition-colors ${clase} ${
                 disabled
                     ? 'opacity-50 cursor-not-allowed'
-                    : 'hover:bg-gray-50 cursor-pointer'
+                    : 'hover:bg-gray-100 hover:border-gray-400 hover:text-gray-900 cursor-pointer'
+            }`}
+        >
+            {icono}
+            {texto}
+        </button>
+    )
+}
+
+export function BotonSecundarioDanger({ id, texto, tipo = "button", onClick, disabled = false, icono, clase }) {
+    return (
+        <button
+            id={id}
+            type={tipo}
+            onClick={onClick}
+            disabled={disabled}
+            className={`flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg border border-red-300 text-sm font-semibold text-red-700 transition-colors ${clase} ${
+                disabled
+                    ? 'opacity-50 cursor-not-allowed'
+                    : 'hover:bg-red-50 cursor-pointer'
             }`}
         >
             {icono}
@@ -92,6 +111,69 @@ export function BotonDropdown({ texto, icono, opciones = [], clase }) {
             <button
                 onClick={() => setAbierto(!abierto)}
                 className={`flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg text-sm border border-gray-300 text-sm font-semibold text-gray-700 transition-colors cursor-pointer ${clase}`}
+            >
+                {icono}
+                {texto}
+                <svg className={`w-4 h-4 transition-transform ${abierto ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </button>
+
+            {abierto && (
+                <div className="absolute right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10 w-52 overflow-hidden">
+                    {opciones.map((op, i) => (
+                        <div key={i}>
+                            {op.esArchivo ? (
+                                <label className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2 cursor-pointer">
+                                    {op.icono && <span>{op.icono}</span>}
+                                    {op.texto}
+                                    <input type="file" accept={op.accept || '.csv'} onChange={op.onClick} className="hidden" />
+                                </label>
+                            ) : (
+                                <button
+                                    onClick={() => { op.onClick(); setAbierto(false) }}
+                                    className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-2"
+                                >
+                                    {op.icono && <span>{op.icono}</span>}
+                                    {op.texto}
+                                </button>
+                            )}
+                            {i < opciones.length - 1 && <hr className="border-gray-100" />}
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
+
+export function BotonDropdownPrimario({ texto, icono, opciones = [], clase, disabled = false, onClick }) {
+    const [abierto, setAbierto] = useState(false)
+    const ref = useRef(null)
+
+    useEffect(() => {
+        function handleClickFuera(e) {
+            if (ref.current && !ref.current.contains(e.target)) {
+                setAbierto(false)
+            }
+        }
+        document.addEventListener('mousedown', handleClickFuera)
+        return () => document.removeEventListener('mousedown', handleClickFuera)
+    }, [])
+
+    return (
+        <div className="relative" ref={ref}>
+            <button
+                disabled={disabled}
+                onClick={() => {
+                    if (disabled) return
+                    onClick ? onClick() : setAbierto(!abierto)
+                }}
+                className={`flex items-center justify-center gap-2 px-4 py-1.5 rounded-lg text-sm font-semibold text-white transition-colors ${clase} ${
+                    disabled
+                        ? 'bg-gray-300 cursor-not-allowed'
+                        : 'bg-blue-900 hover:bg-blue-800 cursor-pointer'
+                }`}
             >
                 {icono}
                 {texto}

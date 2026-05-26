@@ -7,6 +7,8 @@ import InicioAdmin from './pages/Inicio/InicioAdmin'
 import Reservas from './pages/Reservas/Reservas'
 import MisReservas from './pages/Reservas/MisReservas'
 import NuevaReserva from './pages/Reservas/NuevaReserva'
+import DetalleReserva from './pages/Reservas/DetalleReserva'
+import ModificarReserva from './pages/Reservas/ModificarReserva'
 
 import Aeronaves from './pages/Administracion/Aeronaves/Aeronaves'
 import NuevaAeronave from './pages/Administracion/Aeronaves/NuevaAeronave'
@@ -15,6 +17,8 @@ import EditarAeronave from './pages/Administracion/Aeronaves/EditarAeronave'
 import Vuelos from './pages/Vuelos/Vuelos'
 import VuelosNuevo from './pages/Vuelos/NuevoVuelo'
 import EditarVuelo from './pages/Vuelos/EditarVuelo'
+import CargaMasiva from './pages/Vuelos/CargaMasiva'
+import DetalleVuelo from './pages/Vuelos/DetalleVuelo'
 
 import Rutas from './pages/Administracion/Rutas/Rutas'
 import NuevaRuta from './pages/Administracion/Rutas/NuevaRuta'
@@ -49,12 +53,10 @@ function ProtectedRoute({ minNivel, children }) {
   return children
 }
 
-function InicioSegunRol({ usuario }) { 
-    if (usuario?.rol_nivel >= 3) 
-      return <InicioAdmin />
-    if (usuario?.rol_tipo === 'ejecutivo') 
-      return <InicioEjecutivo />
-      
+function InicioSegunRol({ usuario }) {
+    // usuario.rol contiene el nombre del rol (ej: 'admin', 'operador', 'ejecutivo')
+    if (usuario?.rol === 'admin')
+        return <InicioAdmin />
     return <InicioEjecutivo />
 }
 
@@ -106,6 +108,26 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/reservas/detalle/:id"
+          element={
+            <ProtectedRoute minNivel = {1}>
+              <Layout>
+                <DetalleReserva />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reservas/modificar/:id"
+          element={
+            <ProtectedRoute minNivel = {1}>
+              <Layout>
+                <ModificarReserva />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
         {/*AERONAVES*/}
         <Route
           path="/admin/aeronaves"
@@ -139,7 +161,7 @@ function App() {
         />
         {/*VUELOS*/}
         <Route
-          path="/vuelos"
+          path="/admin/vuelos"
           element={
             <ProtectedRoute minNivel = {3}>
               <Layout>
@@ -149,7 +171,7 @@ function App() {
           }
         />
         <Route
-          path="/vuelos/nuevo"
+          path="/admin/vuelos/nuevo"
           element={
             <ProtectedRoute minNivel = {3}>
               <Layout>
@@ -159,11 +181,31 @@ function App() {
           }
         />
         <Route
-          path="/vuelos/editar/:id"
+          path="/admin/vuelos/editar/:id"
           element={
             <ProtectedRoute minNivel = {3}>
               <Layout>
                 <EditarVuelo />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/vuelos/carga-masiva"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <CargaMasiva />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/admin/vuelos/detalle/:id"
+          element={
+            <ProtectedRoute minNivel = {3}>
+              <Layout>
+                <DetalleVuelo />
               </Layout>
             </ProtectedRoute>
           }

@@ -19,7 +19,9 @@ export async function listarAeronaves() {
 
 export async function getAeronavesSelect() {
   const response = await apiFetch('/aeronaves/select')
-  return response.json()
+  const result = await response.json()
+  if (!response.ok) throw new Error(result.message || result.detail || 'Error al obtener aeronaves')
+  return result
 }
 
 export async function getAeronave(id) {
